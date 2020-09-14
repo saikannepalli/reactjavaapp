@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: student-app-client-service
+  namespace: reactjava
+spec:
+  selector:
+    app: student-app-client
+  ports:
+    - port: 5001
+      targetPort: 80
+	    protocol: TCP
+	    nodePort: 30081
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: student-app-client
+  namespace: reactjava
+spec:
+  selector:
+    matchLabels:
+      app: student-app-client
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: student-app-client
+    spec:
+      containers:
+        - name: student-app-client
+          image: saikannepalli/react:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+
